@@ -1,4 +1,4 @@
-module github.com/meenaispeaks6-droid/meena/tools/relay
+module github.com/anilmeenaa/mina/tools/relay
 
 go 1.23
 

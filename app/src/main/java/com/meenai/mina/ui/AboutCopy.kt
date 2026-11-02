@@ -56,7 +56,9 @@ object AboutCopy {
     val X_GROUP_FIRST: Boolean get() = uiLocale().language != "zh"
 
     val FOLLOW: String get() = tr(R.string.about_follow)
-    val FOLLOW_SUB: String get() = tr(R.string.about_follow_sub, MinaLinks.X_HANDLE)
+    val FOLLOW_X: String get() = tr(R.string.about_follow_x)
+    val FOLLOW_X_SUB: String get() = tr(R.string.about_follow_x_sub, MinaLinks.X_HANDLE)
+    val FOLLOW_SUB: String get() = tr(R.string.about_follow_sub, MinaLinks.INSTAGRAM_HANDLE)
     val REPO: String get() = tr(R.string.about_repo)
     val REPO_SUB: String get() = tr(R.string.about_repo_sub, MinaLinks.REPO_LABEL)
     val GUIDE: String get() = tr(R.string.about_guide)

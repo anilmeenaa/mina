@@ -137,7 +137,8 @@ fun AboutScreen(
             ListRow(MinaIcons.Bug, AboutCopy.FEEDBACK, AboutCopy.FEEDBACK_SUB, onClick = { sheet = AboutSheet.Feedback }) { RowChevron() }
         }
         GroupCard {
-            ListRow(MinaIcons.XMark, AboutCopy.FOLLOW, AboutCopy.FOLLOW_SUB, first = true, onClick = { onOpenUrl(MinaLinks.X) }) { ExternalMark() }
+            ListRow(MinaIcons.Camera, AboutCopy.FOLLOW, AboutCopy.FOLLOW_SUB, first = true, onClick = { onOpenUrl(MinaLinks.INSTAGRAM) }) { ExternalMark() }
+            ListRow(MinaIcons.XMark, AboutCopy.FOLLOW_X, AboutCopy.FOLLOW_X_SUB, onClick = { onOpenUrl(MinaLinks.X) }) { ExternalMark() }
             ListRow(MinaIcons.Code, AboutCopy.REPO, AboutCopy.REPO_SUB, onClick = { onOpenUrl(MinaLinks.REPO) }) { ExternalMark() }
             ListRow(MinaIcons.Book, AboutCopy.GUIDE, AboutCopy.GUIDE_SUB, onClick = { onOpenUrl(MinaLinks.README) }) { ExternalMark() }
         }
@@ -326,7 +327,16 @@ private fun FeedbackOption(icon: ImageVector, title: String, sub: String, first:
  */
 @Composable
 internal fun GroupSheet(xFirst: Boolean, onSave: () -> Unit, onJoinX: () -> Unit, onDismiss: () -> Unit) {
+    val c = MinaTheme.colors
     AboutSheetFrame(AboutCopy.GROUP_SHEET_TITLE, AboutCopy.GROUP_SHEET_SUB, "group-sheet", onDismiss) {
-        MinaButton(AboutCopy.GROUP_JOIN_X, onJoinX, Modifier.fillMaxWidth().padding(top = 14.dp).testTag("group-join-x"))
+        Column(Modifier.fillMaxWidth().padding(top = 12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Image(
+                painterResource(R.drawable.mina_whatsapp_qr), contentDescription = null,
+                Modifier.size(220.dp).clip(RoundedCornerShape(16.dp)),
+            )
+            Text(AboutCopy.GROUP_HINT, Modifier.padding(top = 8.dp), style = MinaType.Hint, color = c.ink3, textAlign = TextAlign.Center)
+        }
+        MinaButton(AboutCopy.SAVE_QR, onSave, Modifier.fillMaxWidth().padding(top = 14.dp), kind = ButtonKind.Tonal)
+        MinaButton(AboutCopy.GROUP_JOIN_X, onJoinX, Modifier.fillMaxWidth().padding(top = 8.dp).testTag("group-join-x"))
     }
 }

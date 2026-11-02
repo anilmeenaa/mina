@@ -6,20 +6,20 @@ import android.os.Environment
 import android.provider.MediaStore
 import com.meenai.mina.R
 
-/** 作者的微信二维码(随 App 打包,换码只换 res/drawable-nodpi/wechat_qr.jpg)。 */
+/** The WhatsApp community QR (bundled with the app; to change it, swap res/drawable-nodpi/mina_whatsapp_qr.png). */
 object QrImage {
-    val RES = R.drawable.wechat_qr
-    private const val FILE_NAME = "Mina-author-wechat.jpg"
+    val RES = R.drawable.mina_whatsapp_qr
+    private const val FILE_NAME = "Mina-whatsapp-community.png"
 
     /**
-     * 存进相册的 Pictures/Mina。经 MediaStore 写自己新建的图片不要存储权限(安卓 10 起如此,Mina 最低支持安卓 11)。
+     * Saves into Pictures/Mina.经 MediaStore 写自己新建的图片不要存储权限(安卓 10 起如此,Mina 最低支持安卓 11)。
      * 写完前标成待定,别的 App 看不到半张图;失败时删掉那一条。
      */
     fun saveToPictures(context: Context): Boolean {
         val resolver = context.contentResolver
         val values = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, FILE_NAME)
-            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/png")
             put(MediaStore.Images.Media.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/Mina")
             put(MediaStore.Images.Media.IS_PENDING, 1)
         }
