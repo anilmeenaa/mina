@@ -17,7 +17,7 @@ var webFiles embed.FS
 var webPage = template.Must(template.ParseFS(webFiles, "web/page.html"))
 var translations = func() map[string]map[string]string {
 	result := map[string]map[string]string{}
-	for _, lang := range []string{"en", "zh-Hans", "zh-Hant"} {
+	for _, lang := range []string{"en"} {
 		b, err := webFiles.ReadFile("web/" + lang + ".json")
 		if err != nil {
 			panic(err)
@@ -41,29 +41,13 @@ type pageData struct {
 
 func normalizeLanguage(tag string) string {
 	parts := strings.Split(strings.ToLower(strings.ReplaceAll(tag, "_", "-")), "-")
-	if parts[0] == "en" {
+	if len(parts) > 0 && parts[0] == "en" {
 		return "en"
 	}
-	if parts[0] != "zh" {
-		return ""
-	}
-	for _, part := range parts[1:] {
-		if part == "hant" {
-			return "zh-Hant"
-		}
-		if part == "hans" {
-			return "zh-Hans"
-		}
-	}
-	for _, part := range parts[1:] {
-		if part == "tw" || part == "hk" || part == "mo" {
-			return "zh-Hant"
-		}
-	}
-	return "zh-Hans"
+	return ""
 }
 func pageLanguage(r *http.Request) string {
-	if c, err := r.Cookie("mika_language"); err == nil && translations[c.Value] != nil {
+	if c, err := r.Cookie("mina_language"); err == nil && translations[c.Value] != nil {
 		return c.Value
 	}
 	type choice struct {
@@ -104,7 +88,7 @@ func (g *gateway) render(w http.ResponseWriter, r *http.Request, status int, mes
 	lang := pageLanguage(r)
 	data := pageData{Lang: lang, Copy: translations[lang], Message: message, Code: code, Bad: bad, Confirm: confirm}
 	data.Preference = "auto"
-	if c, err := r.Cookie("mika_language"); err == nil && translations[c.Value] != nil {
+	if c, err := r.Cookie("mina_language"); err == nil && translations[c.Value] != nil {
 		data.Preference = c.Value
 	}
 	var b bytes.Buffer
@@ -155,7 +139,7 @@ func (g *gateway) language(w http.ResponseWriter, r *http.Request) {
 		failure(w, 400, "invalid_language")
 		return
 	}
-	cookie := &http.Cookie{Name: "mika_language", Value: lang, Path: "/", Secure: strings.HasPrefix(g.base, "https://"), HttpOnly: true, SameSite: http.SameSiteLaxMode, MaxAge: 365 * 24 * 60 * 60}
+	cookie := &http.Cookie{Name: "mina_language", Value: lang, Path: "/", Secure: strings.HasPrefix(g.base, "https://"), HttpOnly: true, SameSite: http.SameSiteLaxMode, MaxAge: 365 * 24 * 60 * 60}
 	if lang == "auto" {
 		cookie.MaxAge = -1
 	}

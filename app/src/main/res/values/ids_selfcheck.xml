@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 兼容性自检页上的控件 id:无障碍读到的资源 id 就是这些,自检按它们找控件 -->
+<!-- Control ids on the compatibility self-check page; the accessibility tree exposes exactly these ids and the check locates controls by them -->
 <resources>
     <item name="selfcheck_title" type="id" />
     <item name="selfcheck_note" type="id" />

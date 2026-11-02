@@ -10,7 +10,7 @@ import (
 
 func TestWebLanguagesAndCatalogCompleteness(t *testing.T) {
 	f := newFixture(t)
-	for header, want := range map[string]string{"": "en", "zh-CN": "zh-Hans", "zh-HK": "zh-Hant", "zh-Hans-TW": "zh-Hans", "fr, en;q=0.4,zh-TW;q=0.9": "zh-Hant", "zh;q=0,en;q=1": "en", "zh;q=NaN,en;q=0.1": "en"} {
+	for header, want := range map[string]string{"": "en", "zh-CN": "en", "zh-HK": "en", "en-GB": "en", "fr, en;q=0.4,zh-TW;q=0.9": "en", "zh;q=0,en;q=1": "en", "zh;q=NaN,en;q=0.1": "en"} {
 		req, _ := http.NewRequest("GET", f.server.URL+"/", nil)
 		req.Header.Set("Accept-Language", header)
 		r, err := f.client.Do(req)
@@ -32,7 +32,7 @@ func TestWebLanguagesAndCatalogCompleteness(t *testing.T) {
 			}
 		}
 		req := httptest.NewRequest("GET", f.server.URL+"/", nil)
-		req.AddCookie(&http.Cookie{Name: "mika_language", Value: lang})
+		req.AddCookie(&http.Cookie{Name: "mina_language", Value: lang})
 		w := httptest.NewRecorder()
 		f.g.ServeHTTP(w, req)
 		if !strings.Contains(w.Body.String(), `<html lang="`+lang+`">`) || !strings.Contains(w.Body.String(), `value="`+lang+`" selected`) {
@@ -43,7 +43,7 @@ func TestWebLanguagesAndCatalogCompleteness(t *testing.T) {
 
 func TestWebLanguageCookieAndAdminSecretsAreNotReflected(t *testing.T) {
 	f := newFixture(t)
-	status, h, _ := f.request(t, "POST", "/language", "", url.Values{"lang": {"zh-Hant"}, "return": {"https://evil.example"}}.Encode(), "application/x-www-form-urlencoded")
+	status, h, _ := f.request(t, "POST", "/language", "", url.Values{"lang": {"en"}, "return": {"https://evil.example"}}.Encode(), "application/x-www-form-urlencoded")
 	if status != 303 || h.Get("Location") != "/" || !strings.Contains(h.Get("Set-Cookie"), "HttpOnly") || !strings.Contains(h.Get("Set-Cookie"), "SameSite=Lax") {
 		t.Fatal("invalid language redirect/cookie")
 	}
